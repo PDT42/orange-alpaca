@@ -1,11 +1,11 @@
 <script lang="ts" context="module">
     //
-    export class Lattice {
+    export interface Lattice {
         id: string;
-        width: number;
-        title: string;
+        width?: number;
+        title?: string;
         content: Lattice[] | Lattice[][];
-        properties: object;
+        properties?: object;
     }
 </script>
 

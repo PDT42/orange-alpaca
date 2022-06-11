@@ -1,7 +1,7 @@
 <script lang="ts">
 
-	import * as lattice from "../public/static/template.json";
-	import Lattice from "../lib/lattice/Lattice.svelte";
+	import * as lattice from "./assets/template.json";
+	import Lattice from "./lib/lattice/Lattice.svelte";
 
 	export let name = "Orange Alpaca";
 
