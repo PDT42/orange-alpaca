@@ -1,0 +1,48 @@
+{
+    "id": "lattice-parent",
+    "title": "Example Lattice (Dashboard/Workspace)",
+    "content": [
+        {
+            "id": "lattice-row-1",
+            "title": "Child Lattice (Row/Section)",
+            "content": [
+                [
+                    {
+                        "id": "lattice-row-lattice-1",
+                        "width": 1,
+                        "title": "Example Content",
+                        "content": [],
+                        "properties": {}
+                    },
+                    {
+                        "id": "lattice-row-lattice-2",
+                        "width": 2,
+                        "title": "Example Content",
+                        "content": [],
+                        "properties": {}
+                    }
+                ],
+                [
+                    {
+                        "id": "lattice-row-lattice-1",
+                        "width": 2,
+                        "title": "Example Content",
+                        "content": [],
+                        "properties": {}
+                    },
+                    {
+                        "id": "lattice-row-lattice-2",
+                        "width": 1,
+                        "title": "Example Content",
+                        "content": [],
+                        "properties": {}
+                    }
+                ]
+            ],
+            "properties": {}
+        }
+    ],
+    "properties": {
+        "example-key": "example-value"
+    }
+}
