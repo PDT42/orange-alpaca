@@ -1,16 +1,21 @@
 <script lang="ts">
     //
 
-    import { latticeContextStore } from "./LatticeStore";
+    import { nanoid } from "nanoid";
+    import {
+        createLatticeStore,
+        latticeContextStore,
+        ILatticeJson,
+    } from "./LatticeStore";
 
     export let latticeId: string;
     export let latticeLevel: number = 1;
 
-    let latticeData = $latticeContextStore.latticeStores.get(latticeId);
-    let latticeContentReferences = $latticeData
+    $: latticeData = $latticeContextStore.latticeStores[latticeId];
+    $: latticeContentReferences = $latticeData
         ? $latticeData.contentReferences
         : new Map();
-    let latticeProperties = $latticeData
+    $: latticeProperties = $latticeData
         ? Array.of(...Object.entries($latticeData.properties))
         : [];
 
@@ -34,6 +39,34 @@
         }
     }
 
+    function addContentElement() {
+        console.log("called add lattice");
+
+        let newLatticeId = nanoid();
+        let newLatticeStoreObject: ILatticeJson = {
+            id: newLatticeId,
+            width: 1,
+            title: "New Lattice",
+            content: [],
+            properties: {},
+        };
+
+        latticeContextStore.put(
+            "latticeStores",
+            Object.fromEntries([
+                ...Object.entries($latticeContextStore.latticeStores),
+                [newLatticeId, createLatticeStore(newLatticeStoreObject)],
+            ])
+        );
+
+        latticeData.put("contentReferences", [
+            ...$latticeData.contentReferences,
+            newLatticeId,
+        ]);
+
+        console.log($latticeData);
+    }
+
     //
 </script>
 
@@ -41,7 +74,7 @@
     <div
         class="lattice"
         style="
-            background-color: rgba(110, 110, 150, {1 - 0.2 * latticeLevel});
+            background-color: rgba(43, 43, 43, {0 + 0.1 * latticeLevel});
             flex-grow: {$latticeData.width}
     "
     >
@@ -66,52 +99,75 @@
         </div>
 
         {#if editModeEnabled}
-            <!--  -->
-            <!-- Render Lattice Config -->
-            {#if latticeProperties.length > 0}
+            <div class="lattice">
+                <div class="row"><div class="divider" /></div>
+
+                <!-- Add Content lattice button -->
                 <div class="row">
-                    <div class="divider" />
+                    <button
+                        class="add-child-button"
+                        on:click={addContentElement}
+                    >
+                        ➕
+                    </button>
                 </div>
-                {#each latticeProperties as [key, value]}
-                    <div class="row config-row">
-                        <span>{key}</span>
-                        <span>{value}</span>
-                    </div>
-                {/each}
-            {/if}
-        {:else}
-            <!--  -->
-            <!-- Render Lattice content -->
-            {#each latticeContentReferences as contentLatticeId}
-                {#if Array.isArray(contentLatticeId)}
-                    <div class="row">
-                        {#each contentLatticeId as rowLatticeId}
-                            <svelte:self
-                                latticeId={rowLatticeId}
-                                latticeLevel={latticeLevel + 2}
+
+                <div class="row"><div class="divider" /></div>
+
+                <!-- Render Lattice Config -->
+                {#if latticeProperties.length > 0}
+                    <!--  -->
+
+                    <!-- List all config properties -->
+                    {#each latticeProperties as [key, value]}
+                        <div class="row config-row">
+                            <span>{key}</span>
+                            <input
+                                class="config-input"
+                                bind:value={$latticeData.properties[key]}
+                                placeholder={$latticeData.properties[key]}
                             />
-                        {/each}
-                    </div>
+                        </div>
+                    {/each}
                 {:else}
-                    <div class="row">
-                        <svelte:self
-                            latticeId={contentLatticeId}
-                            latticeLevel={latticeLevel + 1}
-                        />
-                    </div>
+                    <span>No config properties available ...</span>
                 {/if}
-            {/each}
+                <div class="row"><div class="divider" /></div>
+            </div>
         {/if}
+
+        <!-- Render Lattice content -->
+        {#each latticeContentReferences as contentLatticeId}
+            {#if Array.isArray(contentLatticeId)}
+                <div class="row lattice-row">
+                    {#each contentLatticeId as rowLatticeId}
+                        <svelte:self
+                            latticeId={rowLatticeId}
+                            latticeLevel={latticeLevel + 2}
+                        />
+                    {/each}
+                </div>
+            {:else}
+                <div class="row lattice-row">
+                    <svelte:self
+                        latticeId={contentLatticeId}
+                        latticeLevel={latticeLevel + 1}
+                    />
+                </div>
+            {/if}
+        {/each}
     </div>
+{:else}
+    Lattice: {latticeId} - No data found ...
 {/if}
 
 <style>
     .lattice {
         display: flex;
         flex-flow: column nowrap;
-        align-items: stretch;
-        gap: 0.25rem;
+        gap: 0.5rem;
         padding: 0.25rem;
+        margin-inline: 0.25rem;
     }
 
     .row {
@@ -122,7 +178,7 @@
 
     .divider {
         flex-grow: 1;
-        border-top: 0.1rem solid rgb(43, 43, 43);
+        border-top: 0.125rem solid rgb(43, 43, 43);
     }
 
     .title-row {
@@ -131,13 +187,14 @@
 
     .lattice-row {
         justify-content: space-around;
+        align-items: start;
     }
 
     .config-row {
         justify-content: space-between;
     }
 
-    .button {
-        font-size: 0.8rem;
+    .add-child-button {
+        flex-grow: 1;
     }
 </style>

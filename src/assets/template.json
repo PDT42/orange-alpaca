@@ -11,7 +11,15 @@
                         "id": "lattice-row-1-lattice-1",
                         "width": 1,
                         "title": "Example Content",
-                        "content": [],
+                        "content": [
+                            {
+                                "id": "lattice-row-1-lattice-1-lattice-1",
+                                "width": 2,
+                                "title": "Example Content",
+                                "content": [],
+                                "properties": {}
+                            }
+                        ],
                         "properties": {
                             "example-key": "example-content-value"
                         }

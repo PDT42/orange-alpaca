@@ -10,7 +10,7 @@ export interface ILatticeJson {
 
 export interface ILocalLatticeContext {
     latticeParentId: string;
-    latticeStores: Map<string, SvelteStore<any>>;
+    latticeStores: object;
 }
 
 export interface ILatticeStoreObject {
@@ -33,7 +33,7 @@ function extractContentReferences(
     });
 }
 
-function createLatticeStore(latticeJson: ILatticeJson) {
+export function createLatticeStore(latticeJson: ILatticeJson) {
     let initialStoreObject: ILatticeStoreObject = {
         id: latticeJson.id,
         width: latticeJson.width ? latticeJson.width : 1,
@@ -61,7 +61,7 @@ function extractLatticeStoreObjects(latticeJson: ILatticeJson): [string, any][] 
 
 function extractInitialContext(latticeJson: ILatticeJson) {
 
-    let latticeStoreMap = new Map(extractLatticeStoreObjects(latticeJson))
+    let latticeStoreMap = Object.fromEntries(extractLatticeStoreObjects(latticeJson))
 
     return {
         latticeParentId: latticeJson.id,
@@ -71,7 +71,7 @@ function extractInitialContext(latticeJson: ILatticeJson) {
 
 function createLatticeContextStore() {
 
-    console.log("Initializing LatticeContext Store.")
+    console.log("Initialize LatticeContext Store.")
 
     const initialContext: ILocalLatticeContext = {
         latticeParentId: "",
