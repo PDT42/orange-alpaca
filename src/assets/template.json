@@ -8,14 +8,16 @@
             "content": [
                 [
                     {
-                        "id": "lattice-row-lattice-1",
+                        "id": "lattice-row-1-lattice-1",
                         "width": 1,
                         "title": "Example Content",
                         "content": [],
-                        "properties": {}
+                        "properties": {
+                            "example-key": "example-content-value"
+                        }
                     },
                     {
-                        "id": "lattice-row-lattice-2",
+                        "id": "lattice-row-1-lattice-2",
                         "width": 2,
                         "title": "Example Content",
                         "content": [],
@@ -24,14 +26,14 @@
                 ],
                 [
                     {
-                        "id": "lattice-row-lattice-1",
+                        "id": "lattice-row-2-lattice-1",
                         "width": 2,
                         "title": "Example Content",
                         "content": [],
                         "properties": {}
                     },
                     {
-                        "id": "lattice-row-lattice-2",
+                        "id": "lattice-row-2-lattice-2",
                         "width": 1,
                         "title": "Example Content",
                         "content": [],
